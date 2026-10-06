@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d1324">
+<title>Halloween · 31/10 · 21 hs</title>
+<meta name="description" content="Hay una puerta que no deberías abrir… Sábado 31/10, 21 hs. Vení disfrazado/a.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ariporterrieu.github.io/halloween2026/">
+<meta property="og:title" content="🎃 Halloween · Sábado 31/10 · 21 hs">
+<meta property="og:description" content="Hay una puerta que no deberías abrir… Tocá para entrar (con sonido 🔊)">
+<meta property="og:image" content="https://ariporterrieu.github.io/halloween2026/portada.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mystery+Quest&family=IM+Fell+English+SC&family=Alegreya:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<style>
+/* Layout: video vertical fijo a pantalla completa; el contenido sube por encima al scrollear,
+   en "paneles cosidos" (bordes de costura) como la ropa de una muñeca de trapo. */
+:root{
+  --noche:#0d1324;        /* cielo nocturno */
+  --noche-2:#16203a;      /* panel */
+  --luna:#f1e7c9;         /* luz de luna, texto */
+  --luna-tenue:#c9bfa3;   /* texto secundario */
+  --piloto:#e8b62c;       /* amarillo piloto (acento principal) */
+  --calabaza:#e0782b;     /* naranja calabaza (acento secundario) */
+  --hilo:rgba(241,231,201,.35); /* costuras */
+  --boton:#0a0a0c;        /* ojos-botón */
+  --f-titulo:"Mystery Quest", "Georgia", serif;
+  --f-rotulo:"IM Fell English SC", "Georgia", serif;
+  --f-texto:"Alegreya", "Georgia", serif;
+  color-scheme:dark;
+}
+html,body{background:var(--noche);color:var(--luna);margin:0}
+[hidden]{display:none!important}
+body{font-family:var(--f-texto);font-size:17px;line-height:1.55;overflow-x:hidden}
+*{box-sizing:border-box}
+
+/* ---------- Video de fondo ---------- */
+.fondo{position:fixed;inset:0;z-index:0;overflow:hidden;background:var(--noche)}
+.fondo video{width:100%;height:100%;object-fit:cover;display:block}
+.fondo::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(13,19,36,.15) 0%,rgba(13,19,36,0) 35%,rgba(13,19,36,.55) 75%,rgba(13,19,36,.9) 100%);
+  transition:background .8s}
+body.leyendo .fondo::after{background:rgba(13,19,36,.72)}
+
+/* ---------- Puertita de entrada ---------- */
+.entrada{position:fixed;inset:0;z-index:50;display:grid;place-items:center;
+  background:radial-gradient(ellipse at 50% 40%,rgba(22,32,58,.55),rgba(8,11,22,.94) 70%);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:opacity .9s ease, visibility .9s}
+.entrada.abierta{opacity:0;visibility:hidden}
+.entrada-caja{display:grid;justify-items:center;gap:22px;padding-inline:24px;text-align:center}
+.puertita{position:relative;width:118px;height:168px;border:none;cursor:pointer;padding:0;
+  background:linear-gradient(90deg,#3b2a20,#4d382a 50%,#3b2a20);
+  border-radius:60px 60px 6px 6px;
+  box-shadow:0 0 0 6px #2a1d16, 0 0 0 8px var(--hilo), 0 0 50px rgba(232,182,44,.25);
+  transition:transform .3s}
+.puertita:hover,.puertita:focus-visible{transform:scale(1.04)}
+.puertita:focus-visible{outline:2px dashed var(--piloto);outline-offset:14px}
+.puertita::before{content:"";position:absolute;inset:14px 14px 14px 14px;border-radius:46px 46px 4px 4px;
+  border:2px dashed rgba(241,231,201,.18)}
+.cerradura{position:absolute;left:50%;top:58%;transform:translateX(-50%);width:16px;height:30px}
+.cerradura::before{content:"";position:absolute;left:0;top:0;width:16px;height:16px;border-radius:50%;background:var(--boton);
+  box-shadow:0 0 12px 3px rgba(232,182,44,.55)}
+.cerradura::after{content:"";position:absolute;left:4px;top:11px;width:8px;height:18px;background:var(--boton);
+  clip-path:polygon(25% 0,75% 0,100% 100%,0 100%)}
+.puertita .brillo{position:absolute;inset:0;border-radius:inherit;animation:latido 2.6s ease-in-out infinite;
+  box-shadow:inset 0 0 0 0 rgba(232,182,44,0)}
+@keyframes latido{50%{box-shadow:inset 0 0 26px 2px rgba(232,182,44,.28)}}
+.entrada h1{font-family:var(--f-titulo);font-weight:400;font-size:clamp(28px,8vw,40px);line-height:1.1;margin:0;color:var(--luna)}
+.entrada p{margin:0;font-family:var(--f-rotulo);letter-spacing:.08em;color:var(--luna-tenue);font-size:15px}
+
+/* ---------- Botón de sonido ---------- */
+.sonido{position:fixed;z-index:40;right:16px;top:calc(16px + env(safe-area-inset-top,0px));
+  width:44px;height:44px;border-radius:50%;border:1.5px dashed var(--hilo);background:rgba(13,19,36,.6);
+  color:var(--luna);display:grid;place-items:center;cursor:pointer;backdrop-filter:blur(4px)}
+.sonido svg{width:20px;height:20px}
+.sonido:focus-visible{outline:2px solid var(--piloto);outline-offset:3px}
+
+/* ---------- Contenido ---------- */
+main{position:relative;z-index:1;padding-inline:16px}
+.portada{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;
+  padding-block:0 calc(28px + env(safe-area-inset-bottom,0px));max-width:560px;margin-inline:auto}
+.aparece{opacity:0;transform:translateY(18px);transition:opacity 1.1s ease, transform 1.1s ease}
+body.info .aparece{opacity:1;transform:none}
+body.info .aparece.d2{transition-delay:.35s}
+body.info .aparece.d3{transition-delay:.7s}
+body.info .aparece.d4{transition-delay:1.05s}
+
+.eyebrow{font-family:var(--f-rotulo);letter-spacing:.14em;font-size:14px;color:var(--piloto);margin:0 0 6px;
+  text-shadow:0 1px 8px rgba(0,0,0,.8)}
+.titulo{font-family:var(--f-titulo);font-weight:400;margin:0;line-height:.98;text-wrap:balance;
+  font-size:clamp(46px,14vw,78px);color:var(--luna);
+  text-shadow:0 2px 0 rgba(0,0,0,.35),0 0 30px rgba(13,19,36,.9)}
+.titulo .chico{display:block;font-size:.42em;color:var(--luna-tenue);margin-top:8px;letter-spacing:.02em}
+
+.fecha{display:flex;align-items:center;gap:14px;margin-top:22px;flex-wrap:wrap}
+.fecha-num{font-family:var(--f-rotulo);font-size:22px;letter-spacing:.06em;display:flex;align-items:center;gap:10px;
+  text-shadow:0 1px 8px rgba(0,0,0,.9)}
+.fecha-num b{font-family:var(--f-titulo);font-weight:400;font-size:44px;color:var(--piloto);line-height:1}
+.ojo{width:12px;height:12px;border-radius:50%;background:var(--boton);display:inline-block;flex:none;
+  box-shadow:0 0 0 1.5px var(--luna-tenue);position:relative}
+.ojo::before{content:"";position:absolute;inset:3px;border-radius:50%;
+  background:radial-gradient(circle,var(--luna-tenue) 0 .8px,transparent 1px) 0 0/3px 3px}
+
+.deslizar{margin-top:30px;display:flex;align-items:center;gap:10px;font-family:var(--f-rotulo);letter-spacing:.1em;
+  font-size:14px;color:var(--luna-tenue)}
+.deslizar span{display:inline-block;animation:baja 1.8s ease-in-out infinite}
+@keyframes baja{50%{transform:translateY(5px)}}
+
+.seccion{max-width:560px;margin-inline:auto;padding-block:40px 8px;display:grid;gap:18px}
+.rotulo{font-family:var(--f-rotulo);letter-spacing:.14em;font-size:15px;color:var(--piloto);margin:0;
+  display:flex;align-items:center;gap:10px}
+.rotulo::after{content:"";flex:1;border-top:1.5px dashed var(--hilo)}
+
+/* Panel cosido */
+.panel{background:rgba(22,32,58,.82);border-radius:14px;padding:22px 20px;position:relative;
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.panel::before{content:"";position:absolute;inset:6px;border:1.5px dashed var(--hilo);border-radius:10px;pointer-events:none}
+
+.datos{list-style:none;margin:0;padding:0;display:grid;gap:16px}
+.datos li{display:grid;grid-template-columns:22px 1fr;gap:12px;align-items:start}
+.datos .ojo{margin-top:7px}
+.datos strong{display:block;font-weight:700;font-size:18px}
+.datos small{color:var(--luna-tenue);font-size:15px}
+.precio{font-family:var(--f-titulo);font-weight:400;color:var(--piloto);font-size:28px;line-height:1.1}
+
+/* Botones */
+.acciones{display:grid;gap:12px}
+.btn{appearance:none;border:none;cursor:pointer;text-decoration:none;font:inherit;
+  display:flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:12px 18px;border-radius:999px;
+  font-family:var(--f-rotulo);letter-spacing:.06em;font-size:18px;position:relative;transition:transform .15s, filter .15s}
+.btn::before{content:"";position:absolute;inset:4px;border-radius:inherit;border:1.5px dashed currentColor;opacity:.45;pointer-events:none}
+.btn:hover{filter:brightness(1.08)}
+.btn:active{transform:scale(.98)}
+.btn:focus-visible{outline:2px solid var(--luna);outline-offset:3px}
+.btn svg{width:20px;height:20px;flex:none}
+.btn-piloto{background:var(--piloto);color:#22180a}
+.btn-calabaza{background:var(--calabaza);color:#1e0f05}
+.btn-noche{background:rgba(13,19,36,.7);color:var(--luna);box-shadow:inset 0 0 0 1.5px var(--hilo)}
+
+/* Disfraces */
+.disfraces-cab{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.contador{font-family:var(--f-rotulo);color:var(--luna-tenue);font-size:15px;letter-spacing:.06em}
+.lista{list-style:none;margin:0;padding:0;display:grid;gap:0;max-height:330px;overflow-y:auto}
+.lista li{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;padding:12px 4px;border-bottom:1px dashed var(--hilo)}
+.lista li:last-child{border-bottom:none}
+.etiqueta{width:38px;height:38px;border-radius:50%;background:var(--boton);display:grid;place-items:center;
+  font-family:var(--f-titulo);color:var(--piloto);font-size:18px;box-shadow:0 0 0 1.5px var(--luna-tenue)}
+.lista .tema{font-weight:700;font-size:17px;line-height:1.2}
+.lista .quien{color:var(--luna-tenue);font-size:14px}
+.lista li.nuevo{animation:cose 1.2s ease}
+@keyframes cose{from{background:rgba(232,182,44,.18)}to{background:transparent}}
+.nota-ejemplo{margin:0;font-size:13px;color:var(--luna-tenue);font-style:italic}
+
+footer{max-width:560px;margin-inline:auto;padding-block:40px calc(48px + env(safe-area-inset-bottom,0px));text-align:center;
+  font-family:var(--f-rotulo);letter-spacing:.1em;color:var(--luna-tenue);font-size:14px}
+footer .ojos{display:flex;justify-content:center;gap:10px;margin-bottom:12px}
+footer .ojo{width:16px;height:16px}
+
+/* ---------- Ventanas emergentes ---------- */
+.capa{position:fixed;inset:0;z-index:60;display:grid;place-items:end center;background:rgba(5,8,16,.7);
+  padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));backdrop-filter:blur(3px)}
+@media (min-width:600px){.capa{place-items:center}}
+.ventana{width:100%;max-width:440px;background:var(--noche-2);border-radius:18px;padding:26px 22px 22px;position:relative;
+  display:grid;gap:16px;animation:sube .35s ease;max-height:calc(100svh - 32px);overflow-y:auto}
+.ventana::before{content:"";position:absolute;inset:6px;border:1.5px dashed var(--hilo);border-radius:14px;pointer-events:none}
+@keyframes sube{from{transform:translateY(30px);opacity:0}}
+.ventana h2{font-family:var(--f-titulo);font-weight:400;font-size:30px;margin:0;line-height:1.1;padding-right:40px}
+.ventana p{margin:0;color:var(--luna-tenue);font-size:15px}
+.cerrar{position:absolute;top:14px;right:14px;width:40px;height:40px;border-radius:50%;border:none;background:transparent;
+  color:var(--luna);font-size:26px;cursor:pointer;line-height:1;z-index:1}
+.cerrar:focus-visible{outline:2px solid var(--piloto)}
+
+.copiables{display:grid;gap:10px}
+.copiable{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;background:rgba(13,19,36,.7);
+  border-radius:12px;padding:10px 10px 10px 14px}
+.copiable .k{font-family:var(--f-rotulo);font-size:13px;letter-spacing:.1em;color:var(--piloto)}
+.copiable .v{font-size:17px;font-weight:600;word-break:break-all;user-select:all;min-width:0}
+.copiar{border:1.5px dashed var(--hilo);background:transparent;color:var(--luna);border-radius:999px;padding:8px 14px;
+  font-family:var(--f-rotulo);font-size:14px;letter-spacing:.05em;cursor:pointer;min-height:40px;white-space:nowrap}
+.copiar.ok{background:var(--piloto);color:#22180a;border-color:transparent}
+
+form{display:grid;gap:14px}
+label{display:grid;gap:6px;font-family:var(--f-rotulo);letter-spacing:.08em;font-size:14px;color:var(--luna-tenue)}
+input{font:inherit;font-family:var(--f-texto);font-size:17px;color:var(--luna);background:rgba(13,19,36,.8);
+  border:1.5px dashed var(--hilo);border-radius:12px;padding:12px 14px;width:100%}
+input:focus{outline:none;border-color:var(--piloto);border-style:solid}
+.error{color:var(--calabaza);font-size:14px;margin:0}
+
+.aviso{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);z-index:70;
+  background:var(--piloto);color:#22180a;padding:10px 18px;border-radius:999px;font-family:var(--f-rotulo);letter-spacing:.05em;
+  opacity:0;transition:.3s;pointer-events:none;white-space:nowrap}
+.aviso.ver{opacity:1;transform:translate(-50%,0)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+
+<!-- Video de fondo -->
+<div class="fondo" aria-hidden="true">
+  <video id="video" src="fondo.mp4" autoplay muted loop playsinline preload="auto"></video>
+</div>
+
+<!-- Puertita de entrada (necesaria para habilitar el sonido) -->
+<div class="entrada" id="entrada">
+  <div class="entrada-caja">
+    <button class="puertita" id="abrir" aria-label="Abrir la puerta secreta">
+      <span class="brillo"></span><span class="cerradura"></span>
+    </button>
+    <h1>Hay una puerta<br>que no deberías abrir…</h1>
+    <p>Tocá la puertita para entrar</p>
+  </div>
+</div>
+
+<button class="sonido" id="sonido" aria-label="Silenciar" hidden>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" id="ico-sonido">
+    <path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/>
+  </svg>
+</button>
+
+<main>
+  <!-- Portada: aparece a los 5 segundos -->
+  <section class="portada">
+    <p class="eyebrow aparece">Estás invitado/a a cruzar al otro lado</p>
+    <h2 class="titulo aparece d2">Halloween</h2>
+    <div class="fecha aparece d3">
+      <div class="fecha-num"><b>31</b> octubre <span class="ojo"></span> 21 hs</div>
+    </div>
+    <div class="deslizar aparece d4"><span>↓</span> Deslizá para ver más</div>
+  </section>
+
+  <!-- Detalles -->
+  <section class="seccion" id="detalles">
+    <h3 class="rotulo">Lo que tenés que saber</h3>
+    <div class="panel">
+      <ul class="datos">
+        <li><span class="ojo"></span><div><strong>Sábado 31 de octubre, 21 hs</strong><small>La puerta se abre a las nueve en punto.</small></div></li>
+        <li><span class="ojo"></span><div><strong>La comida corre por nuestra cuenta</strong><small>Vos traé tu bebida.</small></div></li>
+        <li><span class="ojo"></span><div><strong>Vení disfrazado/a</strong><small>Sin disfraz no se cruza. Registrá tu temática más abajo.</small></div></li>
+        <li><span class="ojo"></span><div><span class="precio">$10.000</span><small> por persona</small></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Acciones -->
+  <section class="seccion">
+    <h3 class="rotulo">Antes de entrar</h3>
+    <div class="acciones">
+      <a class="btn btn-piloto" id="btn-confirmar" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.2A8 8 0 1 1 20 12z"/><path d="M9 11.5l2 2 4-4"/></svg>
+        Confirmar asistencia
+      </a>
+      <button class="btn btn-calabaza" id="btn-transferir">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h3"/></svg>
+        Datos para transferir
+      </button>
+      <a class="btn btn-noche" id="btn-mapa" href="https://maps.app.goo.gl/QNXuMGxRqN9pW3UL9" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+        Cómo llegar
+      </a>
+    </div>
+  </section>
+
+  <!-- Disfraces -->
+  <section class="seccion" id="disfraces">
+    <h3 class="rotulo">Disfraces confirmados</h3>
+    <div class="panel" style="display:grid;gap:14px">
+      <div class="disfraces-cab">
+        <span class="contador" id="contador"></span>
+      </div>
+      <ul class="lista" id="lista"></ul>
+      <p class="nota-ejemplo" id="nota-ejemplo">Los disfraces de esta lista son de ejemplo, para ver el diseño.</p>
+    </div>
+    <button class="btn btn-noche" id="btn-registrar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      Registrar mi disfraz
+    </button>
+  </section>
+
+  <footer>
+    <div class="ojos"><span class="ojo"></span><span class="ojo"></span></div>
+    Te esperamos del otro lado de la puerta
+  </footer>
+</main>
+
+<!-- Ventana: transferencia -->
+<div class="capa" id="v-transferir" hidden role="dialog" aria-modal="true" aria-labelledby="t-transferir">
+  <div class="ventana">
+    <button class="cerrar" data-cerrar aria-label="Cerrar">×</button>
+    <h2 id="t-transferir">Datos para transferir</h2>
+    <p>$10.000 por persona. Tocá «Copiar» en el dato que necesites.</p>
+    <div class="copiables" id="copiables"></div>
+    <button class="btn btn-calabaza" id="copiar-todo">Copiar todos los datos</button>
+  </div>
+</div>
+
+<!-- Ventana: registrar disfraz -->
+<div class="capa" id="v-registrar" hidden role="dialog" aria-modal="true" aria-labelledby="t-registrar">
+  <div class="ventana">
+    <button class="cerrar" data-cerrar aria-label="Cerrar">×</button>
+    <h2 id="t-registrar">Registrá tu disfraz</h2>
+    <p>Es anónimo: solo se muestra la temática, así los demás saben qué personajes ya están tomados.</p>
+    <form id="form-disfraz" novalidate>
+      <label for="in-tema">Temática del disfraz
+        <input id="in-tema" name="tema" placeholder="Ej: La Otra Madre" maxlength="60">
+      </label>
+      <p class="error" id="error" hidden></p>
+      <button class="btn btn-piloto" type="submit">Registrar</button>
+    </form>
+  </div>
+</div>
+
+<div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+
+<script>
+/* ===== Configuración (estos datos se completan con los reales) ===== */
+const CONFIG = {
+  whatsapp: "5493755492802",          // número con código de país, sin + ni espacios
+  mensajeWpp: "¡Hola! Confirmo mi asistencia a la fiesta de Halloween del 31/10 🎃",
+  transferencia: [
+    { k: "Alias",   v: "arinic.mp" },
+    { k: "Monto",   v: "$10.000 por persona" }
+  ],
+  segundosHastaInfo: 5,
+  apiUrl: ""   // URL de la app web de Google Apps Script (termina en /exec)
+};
+let disfraces = [   // ejemplo; en la versión final vienen de la planilla
+  { tema: "La Otra Madre" },
+  { tema: "Gato negro" },
+  { tema: "Muñeca con ojos de botón" },
+  { tema: "Fantasmas del espejo" }
+];
+
+/* ===== Entrada + sonido ===== */
+const video = document.getElementById("video");
+const entrada = document.getElementById("entrada");
+const btnSonido = document.getElementById("sonido");
+let timerInfo;
+
+document.getElementById("abrir").addEventListener("click", () => {
+  video.currentTime = 0;
+  video.muted = false;
+  video.play().catch(() => { video.muted = true; video.play(); actualizarIcono(); });
+  entrada.classList.add("abierta");
+  btnSonido.hidden = false;
+  actualizarIcono();
+  timerInfo = setTimeout(() => document.body.classList.add("info"), CONFIG.segundosHastaInfo * 1000);
+});
+
+btnSonido.addEventListener("click", () => { video.muted = !video.muted; actualizarIcono(); });
+function actualizarIcono(){
+  const ico = document.getElementById("ico-sonido");
+  btnSonido.setAttribute("aria-label", video.muted ? "Activar sonido" : "Silenciar");
+  ico.innerHTML = video.muted
+    ? '<path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 9l5 6M22 9l-5 6"/>'
+    : '<path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/>';
+}
+
+/* Oscurece el video cuando se scrollea para leer mejor */
+addEventListener("scroll", () => {
+  document.body.classList.toggle("leyendo", scrollY > innerHeight * 0.45);
+  if (scrollY > 40) document.body.classList.add("info"); // si scrollean antes de los 5s
+}, { passive: true });
+
+/* ===== WhatsApp ===== */
+document.getElementById("btn-confirmar").href =
+  "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(CONFIG.mensajeWpp);
+
+/* ===== Ventanas ===== */
+function abrir(id){ const c = document.getElementById(id); c.hidden = false; c.querySelector("button,input")?.focus(); }
+function cerrar(c){ c.hidden = true; }
+document.querySelectorAll(".capa").forEach(c => {
+  c.addEventListener("click", e => { if (e.target === c || e.target.closest("[data-cerrar]")) cerrar(c); });
+});
+addEventListener("keydown", e => { if (e.key === "Escape") document.querySelectorAll(".capa").forEach(cerrar); });
+
+/* ===== Transferencia ===== */
+const contCopiables = document.getElementById("copiables");
+CONFIG.transferencia.forEach(d => {
+  const fila = document.createElement("div");
+  fila.className = "copiable";
+  fila.innerHTML = `<div style="min-width:0"><div class="k"></div><div class="v"></div></div><button class="copiar">Copiar</button>`;
+  fila.querySelector(".k").textContent = d.k;
+  fila.querySelector(".v").textContent = d.v;
+  fila.querySelector(".copiar").addEventListener("click", e => copiar(d.v, e.currentTarget, fila.querySelector(".v")));
+  contCopiables.appendChild(fila);
+});
+document.getElementById("copiar-todo").addEventListener("click", e => {
+  copiar(CONFIG.transferencia.map(d => d.k + ": " + d.v).join("\n"), null);
+});
+document.getElementById("btn-transferir").addEventListener("click", () => abrir("v-transferir"));
+
+function copiar(texto, boton, nodo){
+  const listo = () => {
+    avisar("Copiado");
+    if (boton){ boton.textContent = "¡Listo!"; boton.classList.add("ok");
+      setTimeout(() => { boton.textContent = "Copiar"; boton.classList.remove("ok"); }, 1600); }
+  };
+  const respaldo = () => {
+    const ta = document.createElement("textarea");
+    ta.value = texto; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    let ok = false; try { ok = document.execCommand("copy"); } catch(_) {}
+    ta.remove();
+    if (ok) listo();
+    else if (nodo){ const r = document.createRange(); r.selectNodeContents(nodo);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r); avisar("Seleccionado: mantené apretado para copiar"); }
+  };
+  if (navigator.clipboard?.writeText) navigator.clipboard.writeText(texto).then(listo, respaldo);
+  else respaldo();
+}
+
+let avisoT;
+function avisar(t){ const a = document.getElementById("aviso"); a.textContent = t; a.classList.add("ver");
+  clearTimeout(avisoT); avisoT = setTimeout(() => a.classList.remove("ver"), 1800); }
+
+/* ===== Disfraces =====
+   Si CONFIG.apiUrl tiene la URL de Google Apps Script, la lista se lee y se guarda en la planilla
+   (compartida entre todos). Si está vacía, funciona en modo de prueba con ejemplos. */
+const lista = document.getElementById("lista");
+const errorForm = document.getElementById("error");
+const btnEnviar = document.querySelector("#form-disfraz button[type=submit]");
+if (CONFIG.apiUrl) { disfraces = []; document.getElementById("nota-ejemplo").hidden = true; }
+
+function pintar(nuevoIdx, cargando){
+  lista.innerHTML = "";
+  if (cargando || !disfraces.length){
+    const li = document.createElement("li");
+    li.style.gridTemplateColumns = "1fr";
+    li.innerHTML = '<span class="quien"></span>';
+    li.firstChild.textContent = cargando ? "Abriendo el baúl de disfraces…" : "Todavía no hay disfraces. ¡Estrená la lista!";
+    lista.appendChild(li);
+  }
+  disfraces.forEach((d, i) => {
+    const li = document.createElement("li");
+    if (i === nuevoIdx) li.className = "nuevo";
+    li.innerHTML = `<span class="etiqueta"></span><div style="min-width:0"><div class="tema"></div></div>`;
+    li.querySelector(".etiqueta").textContent = d.tema.trim()[0].toUpperCase();
+    li.querySelector(".tema").textContent = d.tema;
+    lista.appendChild(li);
+  });
+  const n = disfraces.length;
+  document.getElementById("contador").textContent = cargando ? "" : n + (n === 1 ? " disfraz registrado" : " disfraces registrados");
+}
+
+async function cargarDisfraces(){
+  if (!CONFIG.apiUrl) return pintar();
+  pintar(null, true);
+  try {
+    const r = await fetch(CONFIG.apiUrl);
+    const datos = await r.json();
+    disfraces = datos.disfraces || [];
+    pintar();
+  } catch (_) {
+    lista.innerHTML = '<li style="grid-template-columns:1fr"><span class="quien">No se pudo cargar la lista. Probá recargar la página.</span></li>';
+  }
+}
+cargarDisfraces();
+
+/* Compara sin importar mayúsculas, tildes, signos ni espacios de más */
+function normalizar(t){
+  return t.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
+          .replace(/[^a-z0-9ñ ]/g, " ").replace(/\s+/g, " ").trim();
+}
+function yaTomado(t){ const n = normalizar(t); return disfraces.some(d => normalizar(d.tema) === n); }
+function mostrarError(t){ errorForm.textContent = t; errorForm.hidden = false; }
+const msjTomado = t => "«" + t + "» ya está tomado. Elegí otra temática.";
+
+/* Aviso mientras escribe */
+document.getElementById("in-tema").addEventListener("input", e => {
+  const t = e.target.value.trim();
+  if (t && yaTomado(t)) mostrarError(msjTomado(t)); else errorForm.hidden = true;
+});
+
+document.getElementById("btn-registrar").addEventListener("click", () => abrir("v-registrar"));
+document.getElementById("form-disfraz").addEventListener("submit", async e => {
+  e.preventDefault();
+  const tema = document.getElementById("in-tema").value.trim();
+  if (!tema) return mostrarError("Escribí la temática de tu disfraz.");
+  if (yaTomado(tema)) return mostrarError(msjTomado(tema));
+  errorForm.hidden = true;
+
+  if (CONFIG.apiUrl){
+    btnEnviar.disabled = true; btnEnviar.textContent = "Registrando…";
+    try {
+      // text/plain evita el bloqueo entre dominios de Apps Script
+      const r = await fetch(CONFIG.apiUrl, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
+                                             body: JSON.stringify({ tema }) });
+      const datos = await r.json();
+      if (datos.disfraces) disfraces = datos.disfraces;
+      if (!datos.ok){ pintar(); return mostrarError(datos.error === "tomado" ? msjTomado(tema) : "No se pudo registrar. Probá de nuevo."); }
+    } catch (_) {
+      return mostrarError("No se pudo registrar. Revisá tu conexión y probá de nuevo.");
+    } finally {
+      btnEnviar.disabled = false; btnEnviar.textContent = "Registrar";
+    }
+  } else {
+    disfraces.unshift({ tema });
+  }
+  pintar(0);
+  e.target.reset();
+  cerrar(document.getElementById("v-registrar"));
+  avisar("¡Disfraz registrado!");
+  document.getElementById("disfraces").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+</script>
+
+</body>
+</html>
