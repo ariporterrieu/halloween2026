@@ -1,8 +1,7 @@
 /**
  * Invitación Halloween · Registro anónimo de disfraces
  *
- * Guarda las temáticas en la planilla de Google Sheets a la que está vinculado este script
- * (Extensiones → Apps Script desde la planilla). Usa la hoja "Disfraces":
+ * Guarda las temáticas en la planilla "Halloween 2026 - Disfraces" (ID abajo). Usa la hoja "Disfraces":
  *   Columna A: Temática   Columna B: Fecha de registro
  *
  * GET  → devuelve la lista:            { ok: true, disfraces: [{ tema }] }
@@ -10,6 +9,7 @@
  *        Si la temática ya existe (sin importar mayúsculas, tildes o signos) responde error "tomado".
  */
 
+const PLANILLA_ID = '1-CvVaPrSKIA1iI0LXtpesWniQalxwhkj3HunBMMHqZY';
 const HOJA = 'Disfraces';
 const MAX_LARGO = 60;
 
@@ -55,7 +55,7 @@ function leerDisfraces() {
 }
 
 function hoja() {
-  const libro = SpreadsheetApp.getActiveSpreadsheet();
+  const libro = SpreadsheetApp.openById(PLANILLA_ID);
   let h = libro.getSheetByName(HOJA);
   if (!h) {
     h = libro.insertSheet(HOJA);
